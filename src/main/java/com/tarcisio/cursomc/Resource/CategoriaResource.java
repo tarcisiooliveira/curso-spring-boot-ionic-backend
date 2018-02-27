@@ -1,4 +1,4 @@
-package com.tarcisio.cursomc.Resource;
+ package com.tarcisio.cursomc.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ public class CategoriaResource {
 																 * ResponseEntity encapsula varias informaçoes de uma
 																 * requisiçao http para um serviço rest
 																 */
+		//um handler vai interceptar essa classe e tratar as informaççoes com erro
 		Categoria obj=service.buscar(id);
 		return ResponseEntity.ok().body(obj);
 	}
