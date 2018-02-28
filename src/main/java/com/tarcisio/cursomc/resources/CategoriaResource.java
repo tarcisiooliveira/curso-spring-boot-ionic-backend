@@ -1,7 +1,4 @@
- package com.tarcisio.cursomc.Resource;
-
-import java.util.ArrayList;
-import java.util.List;
+ package com.tarcisio.cursomc.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

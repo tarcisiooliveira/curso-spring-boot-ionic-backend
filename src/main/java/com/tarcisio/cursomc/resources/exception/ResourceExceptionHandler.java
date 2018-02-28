@@ -1,4 +1,4 @@
-package com.tarcisio.cursomc.Resource.Exception;
+package com.tarcisio.cursomc.resources.exception;
 
 import javax.servlet.http.HttpServletRequest;
 
