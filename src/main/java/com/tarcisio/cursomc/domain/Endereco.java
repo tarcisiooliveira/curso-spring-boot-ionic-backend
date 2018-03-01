@@ -35,7 +35,6 @@ public class Endereco implements Serializable {
 	private Cidade cidade;
 
 	private Endereco() {
-
 	}
 
 	@Override
