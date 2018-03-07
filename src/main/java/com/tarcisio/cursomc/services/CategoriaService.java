@@ -1,13 +1,13 @@
 package com.tarcisio.cursomc.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.tarcisio.cursomc.domain.Categoria;
 import com.tarcisio.cursomc.repositories.CategoriaRepository;
+import com.tarcisio.cursomc.services.exceptions.DataIntegrityException;
 import com.tarcisio.cursomc.services.exceptions.ObjectNotFoundException;
-
-
 
 @Service // para informar que é da categoria service
 public class CategoriaService {
@@ -36,6 +36,17 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+
+	public void delete(Integer id) {
+
+		find(id);
+		try {
+			repo.delete(id);	
+		}catch (DataIntegrityViolationException e){
+			throw new DataIntegrityException("Não é possível exclui uma categoria que possui produto");
+		}
+		
 	}
 
 }

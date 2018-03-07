@@ -1,7 +1,6 @@
 package com.tarcisio.cursomc.resources;
-
+// essa classe contem os metodos get, set, post, put, delete
 import java.net.URI;
-import java.security.Provider.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +47,16 @@ public class CategoriaResource {
 																								// o retorno para a tela
 																								// do navegador
 		obj.setId(id);
-		obj=service.update(obj);
-		return ResponseEntity.noContent().build(); //retorno de um corpo vazio para a tela
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build(); // retorno de um corpo vazio para a tela
 	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {// ReponseEntity porque é o retorno
+																	// para a tela do navegador
+		service.delete(id);//Os erros são tratados pela classe
+		//essa classe chama CategoriaServiço, onde são realizadas as operações de CRUD
+		return ResponseEntity.noContent().build(); // retorno de um corpo vazio para a tela
+	}
+
 }
