@@ -14,7 +14,7 @@ public class PedidoService {
 				// repositorio
 	private PedidoRepository repo;
 
-	public Pedido buscar(Integer id) {
+	public Pedido find(Integer id) {
 		Pedido obj = repo.findOne(id);// se o id existe, retorna o objeto, senão, retorna nulo
 		if (obj == null) {
 			throw new ObjectNotFoundException(

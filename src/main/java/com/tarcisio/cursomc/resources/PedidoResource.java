@@ -18,12 +18,12 @@ public class PedidoResource {
 	PedidoService service; //aqui é a instanncia de acesso aclasse serviço
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> listar(@PathVariable Integer id) {/*
+	public ResponseEntity<Pedido> listar(@PathVariable Integer id) {/*
 																 * ResponseEntity encapsula varias informaçoes de uma
 																 * requisiçao http para um serviço rest
 																 */
 		//um handler vai interceptar essa classe e tratar as informaççoes com erro
-		Pedido obj=service.buscar(id);
+		Pedido obj=service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }

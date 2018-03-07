@@ -16,7 +16,7 @@ public class CategoriaService {
 				// repositorio
 	private CategoriaRepository repo;
 
-	public Categoria buscar(Integer id) {
+	public Categoria find(Integer id) {
 		Categoria obj = repo.findOne(id);// se o id existe, retorna o objeto, senão, retorna nulo
 		if (obj == null) {
 			throw new ObjectNotFoundException(
@@ -30,6 +30,11 @@ public class CategoriaService {
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);// garante que o objeto que vai ser inserido é unico, caso houvesse uma
 						// informação no campo, a informaçao do id seria atualizado no bano
+		return repo.save(obj);
+	}
+
+	public Categoria update(Categoria obj) {
+		find(obj.getId());
 		return repo.save(obj);
 	}
 

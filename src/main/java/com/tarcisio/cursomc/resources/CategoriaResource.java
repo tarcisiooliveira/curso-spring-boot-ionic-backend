@@ -1,6 +1,7 @@
 package com.tarcisio.cursomc.resources;
 
 import java.net.URI;
+import java.security.Provider.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +23,32 @@ public class CategoriaResource {
 	CategoriaService service; // aqui é a instanncia de acesso aclasse serviço
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> listar(@PathVariable Integer id) {/*
-																 * ResponseEntity encapsula varias informaçoes de uma
-																 * requisiçao http para um serviço rest
-																 */
+	public ResponseEntity<Categoria> listar(
+			@PathVariable Integer id) {/*
+										 * @PathVariable Integer id é a variavel passada na url do navegado
+										 * ResponseEntity encapsula varias informaçoes de uma requisiçao http para um
+										 * serviço rest
+										 */
 		// um handler vai interceptar essa classe e tratar as informaççoes com erro
-		Categoria obj = service.buscar(id);
+		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {// RequestBody faz o json ser coonvertido para java
-		obj = service.insert(obj);//nesse momento é feita a iserção no banco de dados 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {// RequestBody faz o json ser coonvertido para java,
+																	// podendo acessar os dados para manipulação
+		obj = service.insert(obj);// nesse momento é feita a iserção no banco de dados
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {// ReponseEntity porque é
+																								// o retorno para a tela
+																								// do navegador
+		obj.setId(id);
+		obj=service.update(obj);
+		return ResponseEntity.noContent().build(); //retorno de um corpo vazio para a tela
 	}
 }
