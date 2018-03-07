@@ -7,6 +7,8 @@ import com.tarcisio.cursomc.domain.Categoria;
 import com.tarcisio.cursomc.repositories.CategoriaRepository;
 import com.tarcisio.cursomc.services.exceptions.ObjectNotFoundException;
 
+
+
 @Service // para informar que é da categoria service
 public class CategoriaService {
 
@@ -24,4 +26,11 @@ public class CategoriaService {
 		}
 		return obj;
 	}
+
+	public Categoria insert(Categoria obj) {
+		obj.setId(null);// garante que o objeto que vai ser inserido é unico, caso houvesse uma
+						// informação no campo, a informaçao do id seria atualizado no bano
+		return repo.save(obj);
+	}
+
 }
