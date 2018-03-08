@@ -1,6 +1,9 @@
 package com.tarcisio.cursomc.resources;
+
 // essa classe contem os metodos get, set, post, put, delete
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tarcisio.cursomc.domain.Categoria;
+import com.tarcisio.cursomc.dto.CategoriaDTO;
 import com.tarcisio.cursomc.services.CategoriaService;
 
 @RestController
@@ -22,7 +26,7 @@ public class CategoriaResource {
 	CategoriaService service; // aqui é a instanncia de acesso aclasse serviço
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Categoria> listar(
+	public ResponseEntity<Categoria> find(
 			@PathVariable Integer id) {/*
 										 * @PathVariable Integer id é a variavel passada na url do navegado
 										 * ResponseEntity encapsula varias informaçoes de uma requisiçao http para um
@@ -54,9 +58,16 @@ public class CategoriaResource {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {// ReponseEntity porque é o retorno
 																	// para a tela do navegador
-		service.delete(id);//Os erros são tratados pela classe
-		//essa classe chama CategoriaServiço, onde são realizadas as operações de CRUD
+		service.delete(id);// Os erros são tratados pela classe
+		// essa classe chama CategoriaServiço, onde são realizadas as operações de CRUD
 		return ResponseEntity.noContent().build(); // retorno de um corpo vazio para a tela
 	}
 
+	@RequestMapping( method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {//aqui vou 
+		
+		List<Categoria> listCategoria = service.findAll();
+		List<CategoriaDTO>categoriaDTO=listCategoria.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(categoriaDTO);
+	}
 }
