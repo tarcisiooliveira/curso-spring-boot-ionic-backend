@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.tarcisio.cursomc.domain.Categoria;
@@ -44,13 +47,30 @@ public class CategoriaService {
 
 		find(id);
 		try {
-			repo.delete(id);	
-		}catch (DataIntegrityViolationException e){
+			repo.delete(id);
+		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível exclui uma categoria que possui produto");
 		}
-		
+
 	}
-	public List<Categoria> findAll(){
+
+	public List<Categoria> findAll() {
 		return repo.findAll();
 	}
+
+	/**
+	 * retorna uma pagina de categorias encapsula operações e informações
+	 * 
+	 * @page retorna o numero da pagina, 0 é a pagina inicial
+	 * @linesPerPage já é autoexplicativo
+	 * @orderBy é o campo que vai ordenar a tabela
+	 * @direction é ascendente ou descendente
+	 */
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		
+		return repo.findAll(pageRequest);
+		
+	}
+
 }
