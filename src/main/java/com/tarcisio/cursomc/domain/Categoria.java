@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -19,6 +22,9 @@ public class Categoria implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@NotEmpty(message="Preenchimento obrigatorio")
+	@Length(min=5,max=80, message="O tamanho tem que ser entre 5 e 80")
 	private String nome;
 	
 

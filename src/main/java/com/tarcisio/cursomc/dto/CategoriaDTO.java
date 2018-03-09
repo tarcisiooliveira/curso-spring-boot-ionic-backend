@@ -18,7 +18,9 @@ public class CategoriaDTO implements Serializable {
 		id = categoria.getId();
 		nome = categoria.getNome();
 	}
-
+	
+	
+	
 	public Integer getId() {
 		return id;
 	}
