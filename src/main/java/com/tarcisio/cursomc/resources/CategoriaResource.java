@@ -25,51 +25,66 @@ import com.tarcisio.cursomc.services.CategoriaService;
 @RestController
 @RequestMapping(value = "/categorias") // esse controlador irá responder na pagina web através desse "value"
 public class CategoriaResource {
-	// aqui é a parte de controlador REST
+	/* aqui é a parte de controlador REST */
 	@Autowired
 	CategoriaService service; // aqui é a instanncia de acesso aclasse serviço
 
+	/**
+	 * @PathVariable Integer id é a variavel passada na url do navegado
+	 *               ResponseEntity encapsula varias informaçoes de uma requisiçao
+	 *               http para um serviço rest um handler vai interceptar essa
+	 *               classe e tratar as informaççoes com erro
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Categoria> find(
-			@PathVariable Integer id) {/*
-										 * @PathVariable Integer id é a variavel passada na url do navegado
-										 * ResponseEntity encapsula varias informaçoes de uma requisiçao http para um
-										 * serviço rest
-										 */
-		// um handler vai interceptar essa classe e tratar as informaççoes com erro
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(
-			@Valid @PathVariable CategoriaDTO objDTO) {/*
-														 * RequestBody faz o json ser coonvertido para java, podendo
-														 * acessar os dados para manipulação nesse momento é feita a
-														 * iserção no banco de dados
-														 */
-		Categoria obj = service.fromDTO(objDTO);
+	/**
+	 * RequestBody faz o json ser coonvertido para java, podendo acessar os dados
+	 * para manipulação nesse momento é feita a iserção no banco de dados
+	 */
+//	@RequestMapping(method = RequestMethod.POST)
+//	public ResponseEntity<Void> insert(@Valid @PathVariable CategoriaDTO objDTO) {
+//		Categoria obj = service.fromDTO(objDTO);
+//		obj = service.insert(obj);
+//		System.out.println("Passou aqui.");
+//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+//		return ResponseEntity.created(uri).build();
+//
+//	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
+		Categoria obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+}
 
-	}
-
+	/**
+	 * ReponseEntity porque é o retorno para a tela do navegador retorno de um corpo
+	 * vazio para a tela
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {// ReponseEntity porque é
-																								// o retorno para a tela
-																								// do navegador
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id) {
+		Categoria obj = service.fromDTO(objDTO); 
 		obj.setId(id);
 		obj = service.update(obj);
-		return ResponseEntity.noContent().build(); // retorno de um corpo vazio para a tela
+		return ResponseEntity.noContent().build(); 
 	}
 
+	/**
+	 * ReponseEntity porque é o retorno para a tela do navegador Os erros são
+	 * tratados pela classe essa classe chama CategoriaServiço, onde são realizadas
+	 * as operações de CRUD retorno de um corpo vazio para a tela
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {// ReponseEntity porque é o retorno
-																	// para a tela do navegador
-		service.delete(id);// Os erros são tratados pela classe
-		// essa classe chama CategoriaServiço, onde são realizadas as operações de CRUD
-		return ResponseEntity.noContent().build(); // retorno de um corpo vazio para a tela
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);//
+		return ResponseEntity.noContent().build();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

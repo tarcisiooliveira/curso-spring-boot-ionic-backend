@@ -66,6 +66,8 @@ public class CategoriaService {
 	 * @linesPerPage já é autoexplicativo
 	 * @orderBy é o campo que vai ordenar a tabela
 	 * @direction é ascendente ou descendente
+	 * 
+	 * Porque
 	 */
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
