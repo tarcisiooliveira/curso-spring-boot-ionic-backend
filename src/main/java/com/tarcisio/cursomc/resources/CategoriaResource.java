@@ -45,24 +45,25 @@ public class CategoriaResource {
 	 * RequestBody faz o json ser coonvertido para java, podendo acessar os dados
 	 * para manipulação nesse momento é feita a iserção no banco de dados
 	 */
-//	@RequestMapping(method = RequestMethod.POST)
-//	public ResponseEntity<Void> insert(@Valid @PathVariable CategoriaDTO objDTO) {
-//		Categoria obj = service.fromDTO(objDTO);
-//		obj = service.insert(obj);
-//		System.out.println("Passou aqui.");
-//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-//		return ResponseEntity.created(uri).build();
-//
-//	}
-	
-	@RequestMapping(method=RequestMethod.POST)
+	// @RequestMapping(method = RequestMethod.POST)
+	// public ResponseEntity<Void> insert(@Valid @PathVariable CategoriaDTO objDTO)
+	// {
+	// Categoria obj = service.fromDTO(objDTO);
+	// obj = service.insert(obj);
+	// System.out.println("Passou aqui.");
+	// URI uri =
+	// ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+	// return ResponseEntity.created(uri).build();
+	//
+	// }
+
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
 		Categoria obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
-}
+	}
 
 	/**
 	 * ReponseEntity porque é o retorno para a tela do navegador retorno de um corpo
@@ -70,10 +71,10 @@ public class CategoriaResource {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id) {
-		Categoria obj = service.fromDTO(objDTO); 
+		Categoria obj = service.fromDTO(objDTO);
 		obj.setId(id);
 		obj = service.update(obj);
-		return ResponseEntity.noContent().build(); 
+		return ResponseEntity.noContent().build();
 	}
 
 	/**
