@@ -1,5 +1,9 @@
 package com.tarcisio.cursomc.services;
 
+/**
+* 	Reource é a classe chamada pela requisição da pagina web, ela chama Service que ele então tem acesso ao repository
+*	Pagina->Resource->Service->Repository
+*/
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,16 +71,17 @@ public class CategoriaService {
 	 * @orderBy é o campo que vai ordenar a tabela
 	 * @direction é ascendente ou descendente
 	 * 
-	 * Porque
+	 *            Porque
 	 */
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		
+
 		return repo.findAll(pageRequest);
-		
+
 	}
+
 	public Categoria fromDTO(CategoriaDTO obj) {
-		return new Categoria(obj.getId(),obj.getNome());
+		return new Categoria(obj.getId(), obj.getNome());
 	}
 
 }

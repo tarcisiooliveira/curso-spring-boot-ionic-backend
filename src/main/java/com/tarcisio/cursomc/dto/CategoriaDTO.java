@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -28,7 +29,8 @@ public class CategoriaDTO implements Serializable {
 	@NotEmpty(message = "Preenchimento obrigatorio")
 	@Length(min = 5, max = 80, message = "O tamanho tem que ser entre 5 e 80")
 	private String nome;
-
+	@Email
+	
 	public CategoriaDTO() {
 
 	}

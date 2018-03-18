@@ -1,5 +1,8 @@
 package com.tarcisio.cursomc.resources;
-
+/**
+ * 	Reource é a classe chamada pela requisição da pagina web, ela chama Service que ele então tem acesso ao repository
+ *	Pagina->Resource->Service->Repository
+ */
 // essa classe contem os metodos get, set, post, put, delete
 import java.net.URI;
 import java.util.List;
@@ -92,8 +95,7 @@ public class CategoriaResource {
 	public ResponseEntity<List<CategoriaDTO>> findAll() {// aqui vou
 
 		List<Categoria> listCategoria = service.findAll();
-		List<CategoriaDTO> categoriaDTO = listCategoria.stream().map(obj -> new CategoriaDTO(obj))
-				.collect(Collectors.toList());
+		List<CategoriaDTO> categoriaDTO = listCategoria.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());;
 		return ResponseEntity.ok().body(categoriaDTO);
 	}
 

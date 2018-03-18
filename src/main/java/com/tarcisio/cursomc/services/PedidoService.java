@@ -1,5 +1,9 @@
 package com.tarcisio.cursomc.services;
 
+/**
+ * 	Reource é a classe chamada pela requisição da pagina web, ela chama Service que ele então tem acesso ao repository
+ *	Pagina->Resource->Service->Repository
+ */
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +21,8 @@ public class PedidoService {
 	public Pedido find(Integer id) {
 		Pedido obj = repo.findOne(id);// se o id existe, retorna o objeto, senão, retorna nulo
 		if (obj == null) {
-			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + id + ", tipo " + Pedido.class.getName());// nome da classe no
-																								// final com o parametro
-																								// para o erro
+			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", tipo " + Pedido.class.getName());
+			// nome da classe no final com o parametro para o erro
 		}
 		return obj;
 	}

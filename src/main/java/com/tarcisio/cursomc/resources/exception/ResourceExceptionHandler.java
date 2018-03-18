@@ -43,7 +43,7 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class) // indica que é um tratador de excesões de da classe
-	// objectNtFoundExceptio
+	// MethodArgumentNotValidException
 	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
 		ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro de Validação", System.currentTimeMillis());
 		//e.getBindingResult().getFieldErrors(); esse metodo retorna todos os erros que o sistema capturou
