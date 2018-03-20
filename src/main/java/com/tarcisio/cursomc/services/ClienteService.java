@@ -67,7 +67,8 @@ public class ClienteService {
 	}
 
 	public Cliente update(Cliente obj) {
-		Cliente newObj = find(obj.getId());// para garantir que o objeto existe
+		Cliente newObj = find(obj.getId());// para garantir que o objeto existe, o objeto instaciado está monitorado
+											// pelo JPA
 		updateData(newObj, obj);
 
 		return repo.save(newObj);

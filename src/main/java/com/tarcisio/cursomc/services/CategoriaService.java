@@ -45,10 +45,16 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		Categoria newObj=find(obj.getId());//para garantir que o objeto existe
+		Categoria newObj = find(obj.getId());// para garantir que o objeto existe, o objeto instaciado está monitorado
+												// pelo JPA
 		updateData(newObj, obj);
-		
+
 		return repo.save(newObj);
+	}
+
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+		
 	}
 
 	public void delete(Integer id) {
@@ -85,13 +91,6 @@ public class CategoriaService {
 
 	public Categoria fromDTO(CategoriaDTO obj) {
 		return new Categoria(obj.getId(), obj.getNome());
-	}
-
-	private void updateData(Categoria newObj, Categoria obj) {
-
-		newObj.setNome(obj.getNome());
-		
-
 	}
 
 }
