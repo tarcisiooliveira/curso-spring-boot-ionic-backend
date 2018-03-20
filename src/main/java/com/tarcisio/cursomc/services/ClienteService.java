@@ -28,6 +28,7 @@ public class ClienteService {
 */
 // Reource é a classe chamada pela requisição da pagina web, ela chama Service 
 package com.tarcisio.cursomc.services;
+
 /**
  * 	Reource é a classe chamada pela requisição da pagina web, ela chama Service que ele então tem acesso ao repository
  *	Pagina->Resource->Service->Repository
@@ -55,7 +56,9 @@ public class ClienteService {
 	private ClienteRepository repo;
 
 	public Cliente find(Integer id) {
+		System.out.println("APassou aqui");
 		Cliente obj = repo.findOne(id);
+		System.out.println("APassou aqui TMB" + "");
 		if (obj == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName());
@@ -64,29 +67,25 @@ public class ClienteService {
 	}
 
 	public Cliente update(Cliente obj) {
-		Cliente newObj=find(obj.getId());//para garantir que o objeto existe
+		Cliente newObj = find(obj.getId());// para garantir que o objeto existe
 		updateData(newObj, obj);
-		
+
 		return repo.save(newObj);
 	}
 
 	private void updateData(Cliente newObj, Cliente obj) {
-		
-		
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
-		
 	}
 
 	public void delete(Integer id) {
-
 		find(id);
 		try {
 			repo.delete(id);
 		} catch (DataIntegrityViolationException e) {
 			System.out.println("passou por aqui");
 			throw new DataIntegrityException("Não é possível exclui porque há entidades relacionadas");
-			
+
 		}
 
 	}
@@ -113,6 +112,6 @@ public class ClienteService {
 	}
 
 	public Cliente fromDTO(ClienteDTO obj) {
-		return new Cliente(obj.getId(),obj.getNome(),obj.getEmail(),null,null);
+		return new Cliente(obj.getId(), obj.getNome(), obj.getEmail(), null, null);
 	}
 }
