@@ -42,10 +42,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.tarcisio.cursomc.domain.Cidade;
 import com.tarcisio.cursomc.domain.Cliente;
-import com.tarcisio.cursomc.domain.Cliente;
+import com.tarcisio.cursomc.domain.Endereco;
+import com.tarcisio.cursomc.domain.enums.TipoCliente;
 import com.tarcisio.cursomc.dto.ClienteDTO;
+import com.tarcisio.cursomc.dto.ClienteNewDTO;
+import com.tarcisio.cursomc.repositories.CidadeRepository;
 import com.tarcisio.cursomc.repositories.ClienteRepository;
+import com.tarcisio.cursomc.repositories.EnderecoRepository;
 import com.tarcisio.cursomc.services.exceptions.DataIntegrityException;
 import com.tarcisio.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -55,6 +60,12 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+
 	public Cliente find(Integer id) {
 		System.out.println("APassou aqui");
 		Cliente obj = repo.findOne(id);
@@ -63,6 +74,22 @@ public class ClienteService {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName());
 		}
+		return obj;
+	}
+
+	// Metodo POST
+	/**
+	 * garante que o objeto que vai ser inserido é unico, caso houvesse uma
+	 * informação no campo, a informaçao do id seria atualizado no banco
+	 * 
+	 * @param obj
+	 *            do tipo Cliente
+	 * @return A confirmação do objeto salvo no banco
+	 */
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		obj=repo.save(obj);
+		enderecoRepository.save(obj.getEnderecos());
 		return obj;
 	}
 
@@ -115,4 +142,26 @@ public class ClienteService {
 	public Cliente fromDTO(ClienteDTO obj) {
 		return new Cliente(obj.getId(), obj.getNome(), obj.getEmail(), null, null);
 	}
+
+	public Cliente fromDTO(ClienteNewDTO obj) {
+		
+		Cliente cliente = new Cliente(null, obj.getNome(), obj.getEmail(), obj.getCpfOuCnpj(),
+				TipoCliente.toEnum(1));
+		System.out.println("texto:======================================="+obj.getCidadeId());
+		Cidade cidade = cidadeRepository.findOne(obj.getCidadeId());
+		System.out.println("texto:======================================="+obj.getCidadeId());
+		Endereco endereco = new Endereco(null, obj.getLogradouro(), obj.getNumero(), obj.getComplemento(),
+				obj.getBairro(), obj.getCep(), cliente, cidade);
+		cliente.getEnderecos().add(endereco);
+		cliente.getTelefones().add(obj.getTelefone1());
+		if (obj.getTelefone2() != null) {
+			cliente.getTelefones().add(obj.getTelefone2());
+		}
+		if (obj.getTelefone3() != null) {
+			cliente.getTelefones().add(obj.getTelefone3());
+		}
+		
+		return cliente;
+	}
+
 }

@@ -32,6 +32,7 @@ public class ClienteResource {
 }
 */
 package com.tarcisio.cursomc.resources;
+import java.net.URI;
 /**
  * 	Reource é a classe chamada pela requisição da pagina web, ela chama Service que ele então tem acesso ao repository
  *	Pagina->Resource->Service->Repository
@@ -50,10 +51,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.tarcisio.cursomc.domain.Categoria;
 import com.tarcisio.cursomc.domain.Cliente;
 import com.tarcisio.cursomc.domain.Cliente;
+import com.tarcisio.cursomc.dto.CategoriaDTO;
 import com.tarcisio.cursomc.dto.ClienteDTO;
+import com.tarcisio.cursomc.dto.ClienteNewDTO;
 import com.tarcisio.cursomc.services.ClienteService;
 
 @RestController
@@ -116,4 +121,13 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDTO);
 	}
 
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
+		Cliente obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
+	
 }
